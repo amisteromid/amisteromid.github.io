@@ -23,77 +23,72 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
 
-  /* ─── DARK NEON BODY with repeated background ─── */
+  /* ─── DARK NEON BODY ─── */
   body {
     font-family: 'Inter', sans-serif;
-    background: var(--bg-dark);
+    background: #000;
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
   }
 
-  /* Repeated faded background image */
+  /* Blurred neon particles background */
   body::before {
     content: '';
-    position: fixed; inset: 0; z-index: 0;
-    background-image: url('6wa1_neon.png');
-    background-size: 400px 400px;
-    background-repeat: repeat;
-    opacity: 0.08;
-    filter: blur(3px);
+    position: fixed; 
+    inset: 0; 
+    z-index: 0;
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(0,229,255,0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(176,38,255,0.12) 0%, transparent 50%),
+      radial-gradient(circle at 40% 70%, rgba(255,45,149,0.1) 0%, transparent 50%),
+      radial-gradient(circle at 90% 80%, rgba(57,255,20,0.08) 0%, transparent 50%),
+      radial-gradient(circle at 10% 90%, rgba(255,230,0,0.06) 0%, transparent 50%);
+    filter: blur(80px);
     pointer-events: none;
+    animation: drift 20s ease-in-out infinite alternate;
   }
-
-  /* Animated grid - more vibrant */
-  body::after {
-    content: '';
-    position: fixed; inset: 0; z-index: 0;
-    background-image:
-      linear-gradient(rgba(0,229,255,0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,229,255,0.08) 1px, transparent 1px);
-    background-size: 56px 56px;
-    animation: gridDrift 24s linear infinite;
-    pointer-events: none;
-  }
-  @keyframes gridDrift {
-    from { background-position: 0 0; }
-    to   { background-position: 56px 56px; }
+  
+  @keyframes drift {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -30px) scale(1.05); }
+    100% { transform: translate(-20px, 20px) scale(0.98); }
   }
 
   /* Ambient orbs - more intense */
   .orb {
     position: fixed; border-radius: 50%;
-    filter: blur(110px);
+    filter: blur(120px);
     pointer-events: none; z-index: 0;
     animation: pulse 8s ease-in-out infinite;
   }
   @keyframes pulse {
     0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.7; transform: scale(1.1); }
+    50% { opacity: 0.6; transform: scale(1.15); }
   }
   .orb-1 { 
-    width:450px; height:450px; 
-    background:rgba(0,229,255,0.15);  
-    top:-120px; left:-100px;
+    width:500px; height:500px; 
+    background:rgba(0,229,255,0.18);  
+    top:-150px; left:-120px;
     animation-delay: 0s;
   }
   .orb-2 { 
-    width:380px; height:380px; 
-    background:rgba(255,45,149,0.12); 
-    bottom:-80px; right:-80px;
+    width:420px; height:420px; 
+    background:rgba(255,45,149,0.14); 
+    bottom:-100px; right:-100px;
     animation-delay: 2s;
   }
   .orb-3 { 
-    width:320px; height:320px; 
-    background:rgba(176,38,255,0.11); 
-    top:55%; left:58%;
+    width:360px; height:360px; 
+    background:rgba(176,38,255,0.12); 
+    top:50%; left:50%;
     animation-delay: 4s;
   }
 
-  /* ─── PAGE SHELL - WIDER ─── */
+  /* ─── PAGE SHELL with better ratio ─── */
   .page {
     position: relative; z-index: 1;
-    max-width: 1100px;
+    max-width: 900px;
     margin: 0 auto;
     min-height: 100vh;
   }
@@ -102,120 +97,125 @@
   .header {
     position: relative;
     background: transparent;
-    padding: 40px 20px 20px;
+    padding-bottom: 0;
     overflow: visible;
   }
 
-  /* Header background image container */
-  .header-bg-wrapper {
+  /* Header image section - profile + 6wa1 only */
+  .header-visual {
     position: relative;
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto 30px;
+    background: var(--bg-dark);
+    padding-bottom: 44px;
     overflow: hidden;
-    border-radius: 20px;
-    border: 2px solid rgba(0,229,255,0.3);
-    box-shadow:
-      0 0 20px rgba(0,229,255,0.3),
-      0 0 40px rgba(0,229,255,0.2),
-      0 0 60px rgba(176,38,255,0.1);
   }
 
+  /* Enhanced neon background image */
   .header-bg-image {
-    display: block;
-    width: 100%;
-    height: auto;
-    filter: brightness(1.1) saturate(1.2);
+    position: absolute;
+    top: -40px; left: 50%;
+    transform: translateX(-50%);
+    width: 140%;
+    max-width: 1200px;
+    opacity: 0.85;
+    pointer-events: none;
+    z-index: 0;
+    filter: brightness(1.2) saturate(1.3);
+    -webkit-mask-image:
+      radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 75%);
+    mask-image:
+      radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 75%);
   }
 
-  /* Profile pic overlaying the image */
+  .header-inner { position: relative; z-index: 1; }
+  .header-spacer { height: 80px; }
+
+  /* Profile pic with stronger glow */
   .profile-pic-wrap {
-    position: absolute;
-    bottom: -50px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
+    display: flex;
+    justify-content: center;
   }
   .profile-pic {
     width: 118px; height: 118px;
     border-radius: 50%;
     object-fit: cover;
-    border: 4px solid var(--bg-dark);
+    border: 3px solid var(--neon-cyan);
     box-shadow:
-      0 0 0 3px var(--neon-cyan),
       0 0 20px rgba(0,229,255,0.8),
       0 0 40px rgba(0,229,255,0.5),
       0 0 60px rgba(0,229,255,0.3);
     background: #1a1a2e;
   }
 
-  /* Name block - OUTSIDE header image */
+  /* Text info - moved outside visual section */
   .header-info {
     text-align: center;
-    margin-top: 70px;
-    padding: 0 20px;
+    margin-top: 30px;
+    padding: 0 20px 30px;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border: 1px solid rgba(0,229,255,0.2);
+    box-shadow: 
+      0 0 30px rgba(0,229,255,0.15),
+      inset 0 1px 0 rgba(255,255,255,0.1);
   }
+  
   .header-info h1 {
-    font-size: 2.2rem;
+    font-size: 1.85rem;
     font-weight: 700;
     color: #fff;
     letter-spacing: 0.4px;
     margin-bottom: 8px;
+    margin-top: 24px;
     text-shadow: 
-      0 0 20px rgba(0,229,255,0.8),
-      0 0 40px rgba(0,229,255,0.5),
-      0 2px 4px rgba(0,0,0,0.5);
+      0 0 20px rgba(0,229,255,0.6),
+      0 2px 4px rgba(0,0,0,0.8);
   }
   .header-info .role {
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     font-weight: 400;
-    color: #d0e8f5;
+    color: #d8e8f5;
     letter-spacing: 0.3px;
-    text-shadow: 
-      0 0 10px rgba(0,229,255,0.4),
-      0 1px 2px rgba(0,0,0,0.5);
+    margin-bottom: 6px;
   }
   .header-info .location {
-    font-size: 0.88rem;
-    color: #a8c8dc;
-    margin-top: 6px;
-    text-shadow: 
-      0 0 8px rgba(0,229,255,0.3),
-      0 1px 2px rgba(0,0,0,0.5);
+    font-size: 0.82rem;
+    color: #b0c8dc;
+    margin-bottom: 20px;
   }
 
-  /* Social pills - OUTSIDE header image */
+  /* Social pills with enhanced visibility */
   .socials {
     display: flex;
     justify-content: center;
-    gap: 12px;
-    margin-top: 28px;
-    margin-bottom: 40px;
+    gap: 10px;
     flex-wrap: wrap;
   }
   .socials a {
     font-family: 'Inter', sans-serif;
-    font-size: 0.82rem;
+    font-size: 0.76rem;
     font-weight: 500;
-    color: #b8d4e8;
+    color: #d0e0f0;
     text-decoration: none;
-    border: 1px solid rgba(0,229,255,0.35);
-    padding: 8px 18px;
+    border: 1px solid rgba(0,229,255,0.4);
+    padding: 7px 16px;
     border-radius: 20px;
     letter-spacing: 0.3px;
     transition: all 0.25s;
-    display: flex; align-items: center; gap: 7px;
+    display: flex; align-items: center; gap: 6px;
     background: rgba(0,229,255,0.08);
-    box-shadow: 0 0 10px rgba(0,229,255,0.2);
+    box-shadow: 0 0 15px rgba(0,229,255,0.2);
   }
   .socials a:hover {
     border-color: var(--neon-cyan);
-    color: var(--neon-cyan);
+    color: #fff;
     box-shadow: 
-      0 0 15px rgba(0,229,255,0.5),
-      0 0 30px rgba(0,229,255,0.3),
-      inset 0 0 10px rgba(0,229,255,0.1);
-    background: rgba(0,229,255,0.15);
+      0 0 20px rgba(0,229,255,0.6),
+      0 0 40px rgba(0,229,255,0.3),
+      inset 0 0 10px rgba(0,229,255,0.15);
+    background: rgba(0,229,255,0.18);
     transform: translateY(-2px);
   }
   .socials a svg {
@@ -231,6 +231,9 @@
     background: #fff;
     border-radius: 12px 12px 0 0;
     border: 2px solid rgba(0,229,255,0.5);
+    margin-top: 40px;
+    margin-left: 20px;
+    margin-right: 20px;
     box-shadow:
       0 0  12px rgba(0,229,255,0.4),
       0 0  30px rgba(0,229,255,0.25),
@@ -240,7 +243,7 @@
       inset 0 -1px 0 rgba(176,38,255,0.1);
   }
 
-  .content { padding: 48px 60px 56px; }
+  .content { padding: 48px 50px 56px; }
 
   /* ─── SECTION TITLES ─── */
   .section-title {
@@ -460,21 +463,13 @@
   }
 
   /* ─── RESPONSIVE ─── */
-  @media (max-width: 768px) {
-    .page { max-width: 100%; }
-    .content { padding: 36px 30px 44px; }
-    .header-bg-wrapper { max-width: 90%; }
-    .profile-pic { width: 100px; height: 100px; }
-    .header-info h1 { font-size: 1.8rem; }
-    .socials { gap: 8px; }
-    .socials a { font-size: 0.76rem; padding: 7px 14px; }
-  }
-
-  @media (max-width: 480px) {
-    .content { padding: 30px 20px 36px; }
-    .header-info h1 { font-size: 1.5rem; }
-    .header-info .role { font-size: 0.92rem; }
-    .socials a { font-size: 0.72rem; padding: 6px 12px; }
+  @media (max-width: 640px) {
+    .content { padding: 36px 22px 44px; }
+    .header-bg-image { width: 180%; opacity: 0.7; }
+    .profile-pic { width: 96px; height: 96px; }
+    .header-info h1 { font-size: 1.45rem; }
+    .header-info { margin-left: 12px; margin-right: 12px; }
+    .content-page { margin-left: 12px; margin-right: 12px; }
   }
 </style>
 </head>
@@ -489,36 +484,41 @@
 
   <!-- ──── HEADER ──── -->
   <header class="header">
-    <div class="header-bg-wrapper">
+    <!-- Visual section: only profile + 6wa1 image -->
+    <div class="header-visual">
       <img class="header-bg-image" src="6wa1_neon.png" alt="" />
-      <div class="profile-pic-wrap">
-        <img class="profile-pic" src="prof.png" alt="Omid Mokhtari" />
+      <div class="header-inner">
+        <div class="header-spacer"></div>
+        <div class="profile-pic-wrap">
+          <img class="profile-pic" src="prof.png" alt="Omid Mokhtari" />
+        </div>
       </div>
     </div>
 
+    <!-- Text info section: outside the visual, clearly readable -->
     <div class="header-info">
       <h1>Omid Mokhtari</h1>
       <div class="role">Ph.D. Researcher · Geometric Deep Learning</div>
       <div class="location">Inria · Lorraine University &nbsp;|&nbsp; Villers-lès-Nancy, France</div>
-    </div>
 
-    <div class="socials">
-      <a href="https://github.com/amisteromid" target="_blank">
-        <svg class="filled" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-        GitHub
-      </a>
-      <a href="https://scholar.google.com/citations?user=RlQNJgYAAAAJ&hl=en" target="_blank">
-        <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        Scholar
-      </a>
-      <a href="https://www.linkedin.com/in/omid-mokhtari-81a982131/" target="_blank">
-        <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
-        LinkedIn
-      </a>
-      <a href="mailto:omid.mokhtari@inria.fr">
-        <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22,6 L12,13 L2,6"/></svg>
-        Email
-      </a>
+      <div class="socials">
+        <a href="https://github.com/amisteromid" target="_blank">
+          <svg class="filled" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          GitHub
+        </a>
+        <a href="https://scholar.google.com/citations?user=RlQNJgYAAAAJ&hl=en" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Scholar
+        </a>
+        <a href="https://www.linkedin.com/in/omid-mokhtari-81a982131/" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+          LinkedIn
+        </a>
+        <a href="mailto:omid.mokhtari@inria.fr">
+          <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22,6 L12,13 L2,6"/></svg>
+          Email
+        </a>
+      </div>
     </div>
   </header>
 
