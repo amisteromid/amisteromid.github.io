@@ -8,37 +8,37 @@
 <style>
   /* ─── VARIABLES ─── */
   :root {
-    --neon-cyan:    #00e5ff;
-    --neon-magenta:#ff2d95;
-    --neon-green:  #39ff14;
-    --neon-violet:#b026ff;
-    --neon-yellow:#ffe600;
-    --bg-dark:     #0a0e1a;
-    --white-page:  #ffffff;
-    --text-primary:#1a1a2e;
+    --neon-cyan:     #00e5ff;
+    --neon-magenta: #ff2d95;
+    --neon-green:   #39ff14;
+    --neon-violet:  #b026ff;
+    --neon-yellow:  #ffe600;
+    --bg-dark:      #0a0e1a;
+    --text-primary: #1a1a2e;
     --text-secondary:#4a4a6a;
-    --text-muted:  #8888aa;
-    --accent-line:#e8e8f0;
+    --text-muted:   #8888aa;
+    --accent-line:  #e4e6ef;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
 
-  /* ─── NEON BACKGROUND (full viewport) ─── */
+  /* ─── DARK NEON BODY ─── */
   body {
     font-family: 'Inter', sans-serif;
     background: var(--bg-dark);
     min-height: 100vh;
     position: relative;
+    overflow-x: hidden;
   }
 
-  /* Animated grid on the dark bg */
+  /* Animated grid */
   body::before {
     content: '';
     position: fixed; inset: 0; z-index: 0;
     background-image:
-      linear-gradient(rgba(0,229,255,0.07) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,229,255,0.07) 1px, transparent 1px);
+      linear-gradient(rgba(0,229,255,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.06) 1px, transparent 1px);
     background-size: 56px 56px;
     animation: gridDrift 24s linear infinite;
     pointer-events: none;
@@ -48,149 +48,196 @@
     to   { background-position: 56px 56px; }
   }
 
-  /* Ambient neon orbs */
+  /* Ambient orbs */
   .orb {
     position: fixed; border-radius: 50%;
-    filter: blur(100px);
+    filter: blur(110px);
     pointer-events: none; z-index: 0;
   }
-  .orb-1 { width:320px; height:320px; background:rgba(0,229,255,0.10); top:-80px; left:-60px; }
-  .orb-2 { width:260px; height:260px; background:rgba(255,45,149,0.08); bottom:-40px; right:-50px; }
-  .orb-3 { width:200px; height:200px; background:rgba(176,38,255,0.07); top:50%; left:60%; }
+  .orb-1 { width:380px; height:380px; background:rgba(0,229,255,0.09);  top:-100px; left:-80px; }
+  .orb-2 { width:300px; height:300px; background:rgba(255,45,149,0.07); bottom:-60px; right:-60px; }
+  .orb-3 { width:240px; height:240px; background:rgba(176,38,255,0.06); top:55%; left:58%; }
 
-  /* ─── WHITE CONTENT PAGE ─── */
+  /* ─── PAGE SHELL ─── */
   .page {
     position: relative; z-index: 1;
-    max-width: 800px;
+    max-width: 820px;
     margin: 0 auto;
-    background: var(--white-page);
-    box-shadow: 0 0 60px rgba(0,229,255,0.18), 0 0 120px rgba(176,38,255,0.08);
     min-height: 100vh;
   }
 
-  /* ─── HEADER (dark neon section) ─── */
+  /* ─── HEADER — unified with outer dark bg ─── */
   .header {
     position: relative;
-    background: #0d1117;
+    /* same dark as body so no visible edge */
+    background: var(--bg-dark);
+    padding-bottom: 44px;
     overflow: hidden;
-    padding-bottom: 36px;
   }
 
-  /* Banner background image */
-  .header-banner {
-    width: 100%;
-    height: 220px;
-    background: url('6wa1_neon.png') center/cover no-repeat;
-    position: relative;
-  }
-  /* Subtle dark gradient overlay at the bottom of the banner so it fades into header bg */
-  .header-banner::after {
-    content: '';
-    position: absolute; bottom: 0; left: 0; right: 0;
-    height: 80px;
-    background: linear-gradient(to bottom, transparent, #0d1117);
+  /* 6wa1_neon.png as a large atmospheric layer — not a boxed image */
+  .header-bg-image {
+    position: absolute;
+    top: -40px; left: 50%;
+    transform: translateX(-50%);
+    width: 140%; /* bleeds wider than the page */
+    max-width: 1200px;
+    opacity: 0.75;
+    pointer-events: none;
+    z-index: 0;
+    /* feather all edges to nothing so it melts into the dark bg */
+    -webkit-mask-image:
+      radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 75%);
+    mask-image:
+      radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 75%);
   }
 
-  /* Profile pic circle — sits overlapping the banner bottom edge */
+  /* Content inside header sits above the image */
+  .header-inner { position: relative; z-index: 1; }
+
+  /* Top padding so image has room */
+  .header-spacer { height: 80px; }
+
+  /* Profile pic */
   .profile-pic-wrap {
-    position: relative;
-    margin-top: -56px;
     display: flex;
     justify-content: center;
-    z-index: 2;
   }
   .profile-pic {
-    width: 112px; height: 112px;
+    width: 118px; height: 118px;
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid var(--neon-cyan);
-    box-shadow: 0 0 14px rgba(0,229,255,0.45), 0 0 40px rgba(0,229,255,0.15);
-    background: #1a1a2e; /* fallback */
+    box-shadow:
+      0 0 12px rgba(0,229,255,0.5),
+      0 0 36px rgba(0,229,255,0.18);
+    background: #1a1a2e;
   }
 
-  /* Name & title */
+  /* Name block */
   .header-info {
     text-align: center;
-    margin-top: 18px;
+    margin-top: 20px;
     padding: 0 20px;
   }
   .header-info h1 {
-    font-size: 1.75rem;
+    font-size: 1.85rem;
     font-weight: 700;
-    color: #ffffff;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
+    color: #fff;
+    letter-spacing: 0.4px;
+    margin-bottom: 5px;
   }
   .header-info .role {
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     font-weight: 400;
-    color: var(--text-muted);
+    color: #7a8fa8;
     letter-spacing: 0.3px;
   }
   .header-info .location {
     font-size: 0.78rem;
-    color: #5a6a8a;
-    margin-top: 3px;
+    color: #4e5e75;
+    margin-top: 4px;
   }
 
-  /* Social links row */
+  /* Social pills */
   .socials {
     display: flex;
     justify-content: center;
-    gap: 14px;
-    margin-top: 20px;
+    gap: 10px;
+    margin-top: 22px;
     flex-wrap: wrap;
   }
   .socials a {
     font-family: 'Inter', sans-serif;
-    font-size: 0.75rem;
+    font-size: 0.74rem;
     font-weight: 500;
-    color: #a0b0c8;
+    color: #8aa0be;
     text-decoration: none;
-    border: 1px solid rgba(0,229,255,0.25);
-    padding: 6px 14px;
+    border: 1px solid rgba(0,229,255,0.22);
+    padding: 6px 15px;
     border-radius: 20px;
     letter-spacing: 0.3px;
     transition: all 0.25s;
     display: flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.03);
   }
   .socials a:hover {
     border-color: var(--neon-cyan);
     color: var(--neon-cyan);
-    box-shadow: 0 0 10px rgba(0,229,255,0.3);
+    box-shadow: 0 0 10px rgba(0,229,255,0.28);
+    background: rgba(0,229,255,0.06);
   }
-  .socials a svg { width:14px; height:14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .socials a svg {
+    width:13px; height:13px;
+    fill: none; stroke: currentColor;
+    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  }
   .socials a svg.filled { fill: currentColor; stroke: none; }
 
-  /* ─── WHITE CONTENT AREA ─── */
-  .content { padding: 44px 48px 60px; }
+  /* ─── WHITE CONTENT PAGE with neon border glow ─── */
+  .content-page {
+    position: relative;
+    background: #fff;
+    border-radius: 12px 12px 0 0;
+    /* neon glowing border */
+    border: 1px solid rgba(0,229,255,0.35);
+    box-shadow:
+      0 0  8px rgba(0,229,255,0.25),
+      0 0 24px rgba(0,229,255,0.14),
+      0 0 48px rgba(0,229,255,0.07),
+      0 0 72px rgba(176,38,255,0.06),
+      inset 0 1px 0 rgba(0,229,255,0.12);
+  }
+
+  .content { padding: 48px 50px 56px; }
 
   /* ─── SECTION TITLES ─── */
   .section-title {
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 600;
-    letter-spacing: 2.5px;
+    letter-spacing: 2.8px;
     text-transform: uppercase;
     color: var(--neon-cyan);
-    margin-bottom: 20px;
+    margin-bottom: 22px;
     display: flex; align-items: center; gap: 12px;
   }
   .section-title .line {
     flex: 1; height: 1px;
-    background: var(--accent-line);
+    background: linear-gradient(90deg, var(--accent-line) 0%, transparent 100%);
   }
 
-  /* ─── SECTION SPACING ─── */
-  .section { margin-bottom: 40px; }
+  .section { margin-bottom: 44px; }
+  .section:last-child { margin-bottom: 0; }
 
-  /* ─── EXPERIENCE ITEM ─── */
-  .exp-item {
-    padding: 18px 0;
-    border-bottom: 1px solid var(--accent-line);
+  /* ─── CARDS (the richer style from v1, adapted for white bg) ─── */
+  .card {
+    background: #f7f8fc;
+    border: 1px solid #e2e4ed;
+    border-radius: 8px;
+    padding: 20px 22px;
+    margin-bottom: 12px;
+    position: relative;
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.25s;
   }
-  .exp-item:last-child { border-bottom: none; }
+  .card:hover {
+    border-color: rgba(0,229,255,0.4);
+    box-shadow: 0 2px 16px rgba(0,229,255,0.1);
+    transform: translateY(-1px);
+  }
+  /* left accent bar */
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 12px; left: 0;
+    width: 3px; height: calc(100% - 24px);
+    background: linear-gradient(180deg, var(--neon-cyan), var(--neon-violet));
+    border-radius: 0 3px 3px 0;
+    opacity: 0.6;
+  }
+  .card:last-child { margin-bottom: 0; }
 
-  .exp-top { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 4px; }
+  /* ─── EXPERIENCE ─── */
+  .exp-top { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 4px; margin-bottom: 3px; }
   .exp-title {
     font-size: 1.05rem;
     font-weight: 600;
@@ -198,426 +245,421 @@
   }
   .exp-date {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--text-muted);
+    font-size: 0.68rem;
+    color: var(--neon-green);
     white-space: nowrap;
+    font-weight: 500;
   }
   .exp-place {
-    font-size: 0.85rem;
+    font-size: 0.83rem;
     font-weight: 500;
     color: var(--neon-violet);
-    margin: 3px 0;
+    margin: 3px 0 5px;
   }
   .exp-desc {
-    font-size: 0.88rem;
+    font-size: 0.87rem;
     color: var(--text-secondary);
     line-height: 1.55;
-    margin-top: 4px;
   }
 
   /* ─── PUBLICATIONS ─── */
-  .pub-item {
-    padding: 16px 0;
-    border-bottom: 1px solid var(--accent-line);
-  }
-  .pub-item:last-child { border-bottom: none; }
   .pub-title {
-    font-size: 0.95rem;
+    font-size: 0.97rem;
     font-weight: 600;
     color: var(--text-primary);
     line-height: 1.45;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
   }
   .pub-authors {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
+    font-size: 0.67rem;
     color: var(--text-muted);
-    margin-bottom: 4px;
+    margin-bottom: 5px;
   }
   .pub-venue {
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     font-weight: 500;
     color: var(--neon-magenta);
   }
 
   /* ─── SKILLS ─── */
-  .skill-group { margin-bottom: 18px; }
+  .skill-group { margin-bottom: 20px; }
   .skill-group:last-child { margin-bottom: 0; }
   .skill-label {
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     font-weight: 600;
     color: var(--text-primary);
-    margin-bottom: 8px;
+    margin-bottom: 9px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
   }
   .skill-tags { display: flex; flex-wrap: wrap; gap: 7px; }
   .tag {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     padding: 5px 11px;
-    border-radius: 4px;
-    background: #f0f2f8;
+    border-radius: 5px;
+    background: #eef1f8;
     color: var(--text-secondary);
-    border: 1px solid #e2e4ec;
-    transition: background 0.2s, border-color 0.2s;
+    border: 1px solid #dfe2ec;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
   }
   .tag:hover {
-    background: #e6f7ff;
-    border-color: rgba(0,229,255,0.4);
-    color: #0077aa;
+    background: #e2f6ff;
+    border-color: rgba(0,229,255,0.45);
+    color: #0088aa;
   }
 
   /* ─── PROJECTS ─── */
-  .project-item {
-    padding: 16px 0;
-    border-bottom: 1px solid var(--accent-line);
-  }
-  .project-item:last-child { border-bottom: none; }
   .project-name {
-    font-size: 0.95rem;
+    font-size: 0.97rem;
     font-weight: 600;
     color: var(--text-primary);
-    line-height: 1.4;
-    margin-bottom: 5px;
+    line-height: 1.42;
+    margin-bottom: 6px;
   }
   .project-desc {
-    font-size: 0.88rem;
+    font-size: 0.87rem;
     color: var(--text-secondary);
     line-height: 1.55;
   }
-  .project-tags { margin-top: 8px; display: flex; gap: 7px; flex-wrap: wrap; }
+  .project-tags { margin-top: 10px; display: flex; gap: 7px; flex-wrap: wrap; }
   .project-tag {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
+    font-size: 0.63rem;
     color: var(--neon-magenta);
-    border: 1px solid rgba(255,45,149,0.25);
+    border: 1px solid rgba(255,45,149,0.22);
     padding: 3px 9px;
-    border-radius: 3px;
-    background: rgba(255,45,149,0.04);
+    border-radius: 4px;
+    background: rgba(255,45,149,0.05);
+    font-weight: 500;
   }
 
   /* ─── EDUCATION ─── */
-  .edu-item {
-    padding: 16px 0;
-    border-bottom: 1px solid var(--accent-line);
-  }
-  .edu-item:last-child { border-bottom: none; }
-  .edu-top { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 4px; }
   .edu-degree {
     font-size: 1.0rem;
     font-weight: 600;
     color: var(--text-primary);
+    margin-bottom: 3px;
   }
   .edu-uni {
-    font-size: 0.85rem;
+    font-size: 0.83rem;
     font-weight: 500;
     color: var(--neon-violet);
     margin: 3px 0;
   }
   .edu-grade {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     color: var(--neon-green);
-    margin-top: 3px;
+    font-weight: 500;
+    margin-top: 4px;
   }
 
   /* ─── AWARDS ─── */
-  .award-item {
-    padding: 16px 0;
-    border-bottom: 1px solid var(--accent-line);
-  }
-  .award-item:last-child { border-bottom: none; }
-  .award-top { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 4px; }
   .award-name {
     font-size: 1.0rem;
     font-weight: 600;
     color: var(--text-primary);
+    margin-bottom: 3px;
   }
   .award-desc {
-    font-size: 0.85rem;
+    font-size: 0.84rem;
     color: var(--text-secondary);
-    margin-top: 3px;
     line-height: 1.5;
+    margin-top: 3px;
   }
   .award-highlight {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: #b08a00;
-    margin-top: 5px;
+    font-size: 0.68rem;
+    color: #9a7600;
+    margin-top: 6px;
     font-weight: 500;
+    background: rgba(255,230,0,0.1);
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(255,230,0,0.25);
+  }
+  /* awards get a yellow accent bar instead */
+  .card.award::before {
+    background: linear-gradient(180deg, var(--neon-yellow), #ff9900);
   }
 
   /* ─── FOOTER ─── */
   .footer {
     text-align: center;
-    padding: 24px 0 40px;
-    font-size: 0.72rem;
-    color: var(--text-muted);
+    padding: 28px 0 44px;
+    font-size: 0.7rem;
+    color: #4e5e75;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 1px;
   }
 
   /* ─── RESPONSIVE ─── */
   @media (max-width: 640px) {
-    .content { padding: 36px 24px 48px; }
-    .header-banner { height: 160px; }
-    .profile-pic { width: 92px; height: 92px; }
-    .header-info h1 { font-size: 1.4rem; }
+    .content { padding: 36px 22px 44px; }
+    .header-bg-image { width: 180%; opacity: 0.6; }
+    .profile-pic { width: 96px; height: 96px; }
+    .header-info h1 { font-size: 1.45rem; }
   }
 </style>
 </head>
 <body>
 
-<!-- Neon background layers -->
+<!-- Ambient bg layers -->
 <div class="orb orb-1"></div>
 <div class="orb orb-2"></div>
 <div class="orb orb-3"></div>
 
-<!-- White content page -->
 <div class="page">
 
-  <!-- ──── DARK NEON HEADER ──── -->
+  <!-- ──── HEADER (shares same dark bg as body) ──── -->
   <header class="header">
-    <div class="header-banner"></div>
+    <!-- atmospheric banner image — feathered into nothing on all edges -->
+    <img class="header-bg-image" src="6wa1_neon.png" alt="" />
 
-    <div class="profile-pic-wrap">
-      <img class="profile-pic" src="prof.png" alt="Omid Mokhtari" />
-    </div>
+    <div class="header-inner">
+      <div class="header-spacer"></div>
 
-    <div class="header-info">
-      <h1>Omid Mokhtari</h1>
-      <div class="role">Ph.D. Researcher · Geometric Deep Learning</div>
-      <div class="location">Inria · Lorraine University &nbsp;|&nbsp; Villers-lès-Nancy, France</div>
-    </div>
+      <div class="profile-pic-wrap">
+        <img class="profile-pic" src="prof.png" alt="Omid Mokhtari" />
+      </div>
 
-    <div class="socials">
-      <!-- GitHub -->
-      <a href="https://github.com/Amisteromid" target="_blank">
-        <svg class="filled" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-        GitHub
-      </a>
-      <!-- Google Scholar -->
-      <a href="https://scholar.google.com" target="_blank">
-        <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        Scholar
-      </a>
-      <!-- LinkedIn -->
-      <a href="https://www.linkedin.com/in/omid-mokhtari-81a982131/" target="_blank">
-        <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
-        LinkedIn
-      </a>
-      <!-- Email -->
-      <a href="mailto:omid.mokhtari@inria.fr">
-        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        Email
-      </a>
+      <div class="header-info">
+        <h1>Omid Mokhtari</h1>
+        <div class="role">Ph.D. Researcher · Geometric Deep Learning</div>
+        <div class="location">Inria · Lorraine University &nbsp;|&nbsp; Villers-lès-Nancy, France</div>
+      </div>
+
+      <div class="socials">
+        <a href="https://github.com/Amisteromid" target="_blank">
+          <svg class="filled" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          GitHub
+        </a>
+        <a href="https://scholar.google.com" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Scholar
+        </a>
+        <a href="https://www.linkedin.com/in/omid-mokhtari-81a982131/" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+          LinkedIn
+        </a>
+        <a href="mailto:omid.mokhtari@inria.fr">
+          <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22,6 L12,13 L2,6"/></svg>
+          Email
+        </a>
+      </div>
     </div>
   </header>
 
-  <!-- ──── WHITE CONTENT ──── -->
-  <div class="content">
+  <!-- ──── WHITE CONTENT with neon glowing border ──── -->
+  <div class="content-page">
+    <div class="content">
 
-    <!-- EXPERIENCE -->
-    <div class="section">
-      <div class="section-title">Experience <span class="line"></span></div>
+      <!-- EXPERIENCE -->
+      <div class="section">
+        <div class="section-title">Experience <span class="line"></span></div>
 
-      <div class="exp-item">
-        <div class="exp-top">
-          <div class="exp-title">Ph.D. Researcher</div>
-          <div class="exp-date">Oct 2023 – Present</div>
+        <div class="card">
+          <div class="exp-top">
+            <div class="exp-title">Ph.D. Researcher</div>
+            <div class="exp-date">Oct 2023 – Present</div>
+          </div>
+          <div class="exp-place">Inria Center · Lorraine University, France</div>
+          <div class="exp-desc">Developing Geometric Deep Learning frameworks for protein structure-related problems.</div>
         </div>
-        <div class="exp-place">Inria Center · Lorraine University, France</div>
-        <div class="exp-desc">Developing Geometric Deep Learning frameworks for protein structure-related problems.</div>
-      </div>
 
-      <div class="exp-item">
-        <div class="exp-top">
-          <div class="exp-title">Visiting Researcher</div>
-          <div class="exp-date">Aug – Nov 2025</div>
+        <div class="card">
+          <div class="exp-top">
+            <div class="exp-title">Visiting Researcher</div>
+            <div class="exp-date">Aug – Nov 2025</div>
+          </div>
+          <div class="exp-place">Lindorff-Larsen Lab · Copenhagen University, Denmark</div>
+          <div class="exp-desc">Investigating synergy of protein dynamics in inverse folding tasks using SE(3) Equivariant Neural Networks.</div>
         </div>
-        <div class="exp-place">Lindorff-Larsen Lab · Copenhagen University, Denmark</div>
-        <div class="exp-desc">Investigating synergy of protein dynamics in inverse folding tasks using SE(3) Equivariant Neural Networks.</div>
-      </div>
 
-      <div class="exp-item">
-        <div class="exp-top">
-          <div class="exp-title">Intern / Master Thesis</div>
-          <div class="exp-date">Jan – Jun 2023</div>
+        <div class="card">
+          <div class="exp-top">
+            <div class="exp-title">Intern / Master Thesis</div>
+            <div class="exp-date">Jan – Jun 2023</div>
+          </div>
+          <div class="exp-place">Elofsson Lab · SciLifeLab, Stockholm University, Sweden</div>
+          <div class="exp-desc">AlphaFold-based approach for predicting the assembly of large protein structures.</div>
         </div>
-        <div class="exp-place">Elofsson Lab · SciLifeLab, Stockholm University, Sweden</div>
-        <div class="exp-desc">AlphaFold-based approach for predicting the assembly of large protein structures.</div>
-      </div>
 
-      <div class="exp-item">
-        <div class="exp-top">
-          <div class="exp-title">Management Team Member</div>
-          <div class="exp-date">Jul 2020 – Mar 2022</div>
-        </div>
-        <div class="exp-place">OMITREEN Training & Research Network</div>
-        <div class="exp-desc">Python programming instructor and teaching assistant.</div>
-      </div>
-    </div>
-
-    <!-- PUBLICATIONS -->
-    <div class="section">
-      <div class="section-title">Publications <span class="line"></span></div>
-
-      <div class="pub-item">
-        <div class="pub-title">DynamicGT: a dynamic-aware geometric transformer model to predict protein binding interfaces in flexible and disordered regions</div>
-        <div class="pub-authors">Mokhtari, O., Grudinin, S., Karami, Y., & Khakzad, H.</div>
-        <div class="pub-venue">Cell Systems · 2025</div>
-      </div>
-
-      <div class="pub-item">
-        <div class="pub-title">DynaRepo: The repository of macromolecular conformational dynamics</div>
-        <div class="pub-authors">Mokhtari, O., Bignon, E., Khakzad, H., & Karami, Y.</div>
-        <div class="pub-venue">Nucleic Acids Research · 2025</div>
-      </div>
-
-      <div class="pub-item">
-        <div class="pub-title">Identification of beta-sitosterol and stigmasterol as possible inhibitors of 5α-reductase 1: an In-silico study</div>
-        <div class="pub-authors">Zamani, P., Mokhtari, O., & Dehghanian, F.</div>
-        <div class="pub-venue">Artificial Intelligence in Precision Medicine · 2022</div>
-      </div>
-    </div>
-
-    <!-- SKILLS -->
-    <div class="section">
-      <div class="section-title">Skills <span class="line"></span></div>
-
-      <div class="skill-group">
-        <div class="skill-label">AI & Deep Learning</div>
-        <div class="skill-tags">
-          <span class="tag">PyTorch</span>
-          <span class="tag">E3NN</span>
-          <span class="tag">Graph Neural Networks</span>
-          <span class="tag">Scikit-learn</span>
-          <span class="tag">Geometric Deep Learning</span>
-          <span class="tag">Reinforcement Learning</span>
+        <div class="card">
+          <div class="exp-top">
+            <div class="exp-title">Management Team Member</div>
+            <div class="exp-date">Jul 2020 – Mar 2022</div>
+          </div>
+          <div class="exp-place">OMITREEN Training & Research Network</div>
+          <div class="exp-desc">Python programming instructor and teaching assistant.</div>
         </div>
       </div>
 
-      <div class="skill-group">
-        <div class="skill-label">Scientific Computing</div>
-        <div class="skill-tags">
-          <span class="tag">Python</span>
-          <span class="tag">Bash</span>
-          <span class="tag">R</span>
-          <span class="tag">Git</span>
-          <span class="tag">HPC</span>
-          <span class="tag">SQL</span>
-          <span class="tag">Multiprocessing</span>
-          <span class="tag">API Integration</span>
+      <!-- PUBLICATIONS -->
+      <div class="section">
+        <div class="section-title">Publications <span class="line"></span></div>
+
+        <div class="card">
+          <div class="pub-title">DynamicGT: a dynamic-aware geometric transformer model to predict protein binding interfaces in flexible and disordered regions</div>
+          <div class="pub-authors">Mokhtari, O., Grudinin, S., Karami, Y., & Khakzad, H.</div>
+          <div class="pub-venue">Cell Systems · 2025</div>
+        </div>
+
+        <div class="card">
+          <div class="pub-title">DynaRepo: The repository of macromolecular conformational dynamics</div>
+          <div class="pub-authors">Mokhtari, O., Bignon, E., Khakzad, H., & Karami, Y.</div>
+          <div class="pub-venue">Nucleic Acids Research · 2025</div>
+        </div>
+
+        <div class="card">
+          <div class="pub-title">Identification of beta-sitosterol and stigmasterol as possible inhibitors of 5α-reductase 1: an In-silico study</div>
+          <div class="pub-authors">Zamani, P., Mokhtari, O., & Dehghanian, F.</div>
+          <div class="pub-venue">Artificial Intelligence in Precision Medicine · 2022</div>
         </div>
       </div>
 
-      <div class="skill-group">
-        <div class="skill-label">Protein Engineering</div>
-        <div class="skill-tags">
-          <span class="tag">RFdiffusion</span>
-          <span class="tag">ProteinMPNN</span>
-          <span class="tag">PyRosetta</span>
-          <span class="tag">HMM</span>
-          <span class="tag">PyMOL Scripting</span>
+      <!-- SKILLS -->
+      <div class="section">
+        <div class="section-title">Skills <span class="line"></span></div>
+
+        <div class="skill-group">
+          <div class="skill-label">AI & Deep Learning</div>
+          <div class="skill-tags">
+            <span class="tag">PyTorch</span>
+            <span class="tag">E3NN</span>
+            <span class="tag">Graph Neural Networks</span>
+            <span class="tag">Scikit-learn</span>
+            <span class="tag">Geometric Deep Learning</span>
+            <span class="tag">Reinforcement Learning</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="skill-label">Scientific Computing</div>
+          <div class="skill-tags">
+            <span class="tag">Python</span>
+            <span class="tag">Bash</span>
+            <span class="tag">R</span>
+            <span class="tag">Git</span>
+            <span class="tag">HPC</span>
+            <span class="tag">SQL</span>
+            <span class="tag">Multiprocessing</span>
+            <span class="tag">API Integration</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="skill-label">Protein Engineering</div>
+          <div class="skill-tags">
+            <span class="tag">RFdiffusion</span>
+            <span class="tag">ProteinMPNN</span>
+            <span class="tag">PyRosetta</span>
+            <span class="tag">HMM</span>
+            <span class="tag">PyMOL Scripting</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- PROJECTS -->
-    <div class="section">
-      <div class="section-title">Projects <span class="line"></span></div>
+      <!-- PROJECTS -->
+      <div class="section">
+        <div class="section-title">Projects <span class="line"></span></div>
 
-      <div class="project-item">
-        <div class="project-name">Protein Inverse Folding with Geometry-Aware Co-evolution over Structural Ensembles</div>
-        <div class="project-desc">SE(3)-Equivariant Neural Network for protein inverse folding from conformational ensembles. Applied to ΔΔG prediction upon mutation and sequence design.</div>
-        <div class="project-tags">
-          <span class="project-tag">Ongoing</span>
-          <span class="project-tag">SE(3) Equivariance</span>
-          <span class="project-tag">Inverse Folding</span>
+        <div class="card">
+          <div class="project-name">Protein Inverse Folding with Geometry-Aware Co-evolution over Structural Ensembles</div>
+          <div class="project-desc">SE(3)-Equivariant Neural Network for protein inverse folding from conformational ensembles. Applied to ΔΔG prediction upon mutation and sequence design.</div>
+          <div class="project-tags">
+            <span class="project-tag">Ongoing</span>
+            <span class="project-tag">SE(3) Equivariance</span>
+            <span class="project-tag">Inverse Folding</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="project-name">Enhancing Protein-Protein Interaction Detection via ML & AlphaFold</div>
+          <div class="project-desc">Using machine learning and AlphaFold-multimer to distinguish interactions of homologous chains within large protein complexes.</div>
+          <div class="project-tags">
+            <span class="project-tag">AlphaFold</span>
+            <span class="project-tag">PPI Detection</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="project-name">Detecting Kunitz Domain using a Hidden Markov Model</div>
+          <div class="project-desc">HMM-based detection of unannotated proteins containing the Kunitz domain.</div>
+          <div class="project-tags">
+            <span class="project-tag">HMM</span>
+            <span class="project-tag">Sequence Analysis</span>
+          </div>
         </div>
       </div>
 
-      <div class="project-item">
-        <div class="project-name">Enhancing Protein-Protein Interaction Detection via ML & AlphaFold</div>
-        <div class="project-desc">Using machine learning and AlphaFold-multimer to distinguish interactions of homologous chains within large protein complexes.</div>
-        <div class="project-tags">
-          <span class="project-tag">AlphaFold</span>
-          <span class="project-tag">PPI Detection</span>
+      <!-- EDUCATION -->
+      <div class="section">
+        <div class="section-title">Education <span class="line"></span></div>
+
+        <div class="card">
+          <div class="exp-top">
+            <div class="edu-degree">Ph.D. – Geometric Deep Learning for Biomolecular Structures</div>
+            <div class="exp-date">Oct 2023 – Present</div>
+          </div>
+          <div class="edu-uni">University of Lorraine, France</div>
+        </div>
+
+        <div class="card">
+          <div class="exp-top">
+            <div class="edu-degree">M.Sc. – Bioinformatics</div>
+            <div class="exp-date">Oct 2021 – Sep 2023</div>
+          </div>
+          <div class="edu-uni">University of Bologna, Italy</div>
+          <div class="edu-grade">110 / 110</div>
+        </div>
+
+        <div class="card">
+          <div class="exp-top">
+            <div class="edu-degree">B.Sc. – Cellular & Molecular Biology</div>
+            <div class="exp-date">Oct 2016 – Aug 2020</div>
+          </div>
+          <div class="edu-uni">University of Isfahan, Iran</div>
+          <div class="edu-grade">16.00 / 20</div>
         </div>
       </div>
 
-      <div class="project-item">
-        <div class="project-name">Detecting Kunitz Domain using a Hidden Markov Model</div>
-        <div class="project-desc">HMM-based detection of unannotated proteins containing the Kunitz domain.</div>
-        <div class="project-tags">
-          <span class="project-tag">HMM</span>
-          <span class="project-tag">Sequence Analysis</span>
+      <!-- AWARDS -->
+      <div class="section">
+        <div class="section-title">Awards & Grants <span class="line"></span></div>
+
+        <div class="card award">
+          <div class="exp-top">
+            <div class="award-name">DrEAM Mobility Grant</div>
+            <div class="exp-date">May 2025</div>
+          </div>
+          <div class="award-desc">Université de Lorraine</div>
+          <div class="award-highlight">€4,500 awarded</div>
+        </div>
+
+        <div class="card award">
+          <div class="exp-top">
+            <div class="award-name">DARI – Jean Zay HPC Access</div>
+            <div class="exp-date">Sep 2024</div>
+          </div>
+          <div class="award-desc">IDRIS · Learning the conformational heterogeneity of proteins to predict functional sites</div>
+          <div class="award-highlight">100,000 GPU hours · ~€143,447 equivalent computing cost</div>
+        </div>
+
+        <div class="card award">
+          <div class="exp-top">
+            <div class="award-name">Erasmus+ Scholarship</div>
+            <div class="exp-date">Apr 2022</div>
+          </div>
+          <div class="award-desc">Alma Mater Studiorum · Università di Bologna</div>
         </div>
       </div>
-    </div>
 
-    <!-- EDUCATION -->
-    <div class="section">
-      <div class="section-title">Education <span class="line"></span></div>
-
-      <div class="edu-item">
-        <div class="edu-top">
-          <div class="edu-degree">Ph.D. – Geometric Deep Learning for Biomolecular Structures</div>
-          <div class="exp-date">Oct 2023 – Present</div>
-        </div>
-        <div class="edu-uni">University of Lorraine, France</div>
-      </div>
-
-      <div class="edu-item">
-        <div class="edu-top">
-          <div class="edu-degree">M.Sc. – Bioinformatics</div>
-          <div class="exp-date">Oct 2021 – Sep 2023</div>
-        </div>
-        <div class="edu-uni">University of Bologna, Italy</div>
-        <div class="edu-grade">110 / 110</div>
-      </div>
-
-      <div class="edu-item">
-        <div class="edu-top">
-          <div class="edu-degree">B.Sc. – Cellular & Molecular Biology</div>
-          <div class="exp-date">Oct 2016 – Aug 2020</div>
-        </div>
-        <div class="edu-uni">University of Isfahan, Iran</div>
-        <div class="edu-grade">16.00 / 20</div>
-      </div>
-    </div>
-
-    <!-- AWARDS -->
-    <div class="section">
-      <div class="section-title">Awards & Grants <span class="line"></span></div>
-
-      <div class="award-item">
-        <div class="award-top">
-          <div class="award-name">DrEAM Mobility Grant</div>
-          <div class="exp-date">May 2025</div>
-        </div>
-        <div class="award-desc">Université de Lorraine</div>
-        <div class="award-highlight">€4,500 awarded</div>
-      </div>
-
-      <div class="award-item">
-        <div class="award-top">
-          <div class="award-name">DARI – Jean Zay HPC Access</div>
-          <div class="exp-date">Sep 2024</div>
-        </div>
-        <div class="award-desc">IDRIS · Learning the conformational heterogeneity of proteins to predict functional sites</div>
-        <div class="award-highlight">100,000 GPU hours · ~€143,447 equivalent computing cost</div>
-      </div>
-
-      <div class="award-item">
-        <div class="award-top">
-          <div class="award-name">Erasmus+ Scholarship</div>
-          <div class="exp-date">Apr 2022</div>
-        </div>
-        <div class="award-desc">Alma Mater Studiorum · Università di Bologna</div>
-      </div>
-    </div>
-
-  </div><!-- /content -->
+    </div><!-- /content -->
+  </div><!-- /content-page -->
 
   <div class="footer">© 2025 Omid Mokhtari</div>
 </div><!-- /page -->
