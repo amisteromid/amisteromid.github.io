@@ -3,62 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name | Portfolio</title>
+    <title>Omid Mokhtari | Ph.D. Researcher</title>
     <style>
-        :root {
-            --bg: #ffffff;
-            --text: #1a1a1a;
-            --accent: #666666;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text);
-            background: var(--bg);
-            max-width: 650px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-        header { margin-bottom: 50px; }
-        h1 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.5px; }
-        p { margin-bottom: 20px; }
-        a { color: var(--text); text-decoration: underline; text-underline-offset: 4px; }
-        a:hover { color: var(--accent); }
+        :root { --bg: #ffffff; --text: #111; --accent: #005bb5; --secondary: #666; }
+        body { font-family: -apple-system, system-ui, sans-serif; line-height: 1.6; color: var(--text); background: var(--bg); max-width: 750px; margin: 40px auto; padding: 0 20px; }
+        header { margin-bottom: 40px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        h1 { font-size: 1.8rem; margin: 0; }
+        .subtitle { color: var(--secondary); font-size: 1.1rem; }
         section { margin-bottom: 40px; }
-        .label { font-size: 0.8rem; text-transform: uppercase; color: var(--accent); letter-spacing: 1px; margin-bottom: 10px; display: block; }
-        ul { list-style: none; padding: 0; }
-        li { margin-bottom: 10px; }
-        .project-year { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 15px; }
+        h2 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--secondary); border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 20px; }
+        .item { margin-bottom: 20px; }
+        .item-title { font-weight: 600; display: block; }
+        .item-meta { font-size: 0.9rem; color: var(--secondary); }
+        .pub-authors { font-size: 0.9rem; }
+        .highlight { font-weight: 600; text-decoration: underline; }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .links a { margin-right: 15px; font-weight: 500; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Your Name</h1>
-        <p>Your Role (e.g., Software Engineer / Creative Designer)</p>
-    </header>
+<header>
+    <h1>Omid Mokhtari</h1>
+    <p class="subtitle">Ph.D. Candidate in Geometric Deep Learning [cite: 50]</p>
+    <div class="links">
+        <a href="mailto:omid.mokhtari@inria.fr">Email</a> [cite: 4]
+        <a href="https://github.com/amisteromid">GitHub</a> [cite: 6]
+        <a href="https://linkedin.com/in/Omid-Mokhtari">LinkedIn</a> [cite: 6]
+    </div>
+</header>
 
-    <section>
-        <span class="label">About</span>
-        <p>Brief, one or two-sentence intro about what you do and what you're passionate about. Keep it punchy.</p>
-    </section>
+<section>
+    <h2>Current Research</h2>
+    <div class="item">
+        <span class="item-title">Ph.D. Researcher at Inria Center - Lorraine University</span> [cite: 7, 8]
+        <p>Developing Geometric Deep Learning frameworks for protein structure-related problems. [cite: 9]</p>
+    </div>
+</section>
 
-    <section>
-        <span class="label">Selected Projects</span>
-        <ul>
-            <li><span class="project-year">2024</span> <a href="#">Project Name</a> — A brief description of what you built.</li>
-            <li><span class="project-year">2023</span> <a href="#">Another App</a> — Solved a specific problem using X and Y.</li>
-        </ul>
-    </section>
+<section>
+    <h2>Selected Publications</h2>
+    <div class="item">
+        <span class="item-title">SIMORGH: Scalable dynamic-aware ligand binding site prediction</span> [cite: 23]
+        <span class="pub-authors"><span class="highlight">Mokhtari, O.</span>, et al. Submitted to ICML 2026.</span> [cite: 23, 24]
+    </div>
+    <div class="item">
+        <span class="item-title">DynamicGT: A dynamic-aware geometric transformer model</span> [cite: 25]
+        <span class="pub-authors"><span class="highlight">Mokhtari, O.</span>, et al. (2025). Cell Systems.</span> 
+    </div>
+    <div class="item">
+        <span class="item-title">DynaRepo: The repository of macromolecular conformational dynamics</span> [cite: 27]
+        <span class="pub-authors"><span class="highlight">Mokhtari, O.</span>, et al. (2025). Nucleic Acids Research.</span> [cite: 28]
+    </div>
+</section>
 
-    <section>
-        <span class="label">Connect</span>
-        <p>
-            <a href="https://linkedin.com/in/yourusername">LinkedIn</a> / 
-            <a href="https://github.com/amisteromid">GitHub</a> / 
-            <a href="mailto:your@email.com">Email</a>
-        </p>
-    </section>
+<section>
+    <h2>Education</h2>
+    <div class="item">
+        <span class="item-title">M.Sc. in Bioinformatics</span> [cite: 52]
+        <span class="item-meta">University of Bologna, Italy | Final Grade: 110/110</span> [cite: 54, 55]
+    </div>
+</section>
+
+<section>
+    <h2>Technical Skills</h2>
+    <p><strong>AI:</strong> PyTorch, E3NN, Graph Neural Networks (GNNs), Geometric Deep Learning. [cite: 31, 32]</p>
+    <p><strong>Computing:</strong> HPC optimization, Python, Bash, Git. [cite: 35, 36]</p>
+</section>
 
 </body>
 </html>
