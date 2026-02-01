@@ -4,514 +4,500 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Omid Mokhtari — Geometric Deep Learning Researcher</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
   /* ─── VARIABLES ─── */
   :root {
-    --neon-cyan:    #00f0ff;
+    --neon-cyan:    #00e5ff;
     --neon-magenta:#ff2d95;
     --neon-green:  #39ff14;
     --neon-violet:#b026ff;
     --neon-yellow:#ffe600;
-    --bg-deep:     #020408;
-    --bg-card:     rgba(12,16,28,0.82);
-    --text-dim:    #5a6a8a;
-    --text-mid:    #8fa4c8;
-    --text-bright:#d4e4f7;
-    --glow-cyan:   0 0 8px #00f0ff, 0 0 30px rgba(0,240,255,0.35), 0 0 60px rgba(0,240,255,0.12);
-    --glow-mag:    0 0 8px #ff2d95, 0 0 30px rgba(255,45,149,0.35), 0 0 60px rgba(255,45,149,0.12);
-    --glow-green:  0 0 8px #39ff14, 0 0 30px rgba(57,255,20,0.35);
-    --glow-violet:0 0 8px #b026ff, 0 0 30px rgba(176,38,255,0.35);
+    --bg-dark:     #0a0e1a;
+    --white-page:  #ffffff;
+    --text-primary:#1a1a2e;
+    --text-secondary:#4a4a6a;
+    --text-muted:  #8888aa;
+    --accent-line:#e8e8f0;
   }
 
-  /* ─── RESET ─── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
+
+  /* ─── NEON BACKGROUND (full viewport) ─── */
   body {
-    font-family: 'Rajdhani', sans-serif;
-    background: var(--bg-deep);
-    color: var(--text-bright);
-    overflow-x: hidden;
-    line-height: 1.6;
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-dark);
+    min-height: 100vh;
+    position: relative;
   }
 
-  /* ─── SCANLINE OVERLAY ─── */
-  body::after {
+  /* Animated grid on the dark bg */
+  body::before {
     content: '';
-    position: fixed; inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0,0,0,0.15) 2px,
-      rgba(0,0,0,0.15) 4px
-    );
-    pointer-events: none;
-    z-index: 9999;
-  }
-
-  /* ─── ANIMATED BG GRID ─── */
-  .bg-grid {
     position: fixed; inset: 0; z-index: 0;
     background-image:
-      linear-gradient(rgba(0,240,255,0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,240,255,0.06) 1px, transparent 1px);
-    background-size: 60px 60px;
-    animation: gridMove 20s linear infinite;
+      linear-gradient(rgba(0,229,255,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.07) 1px, transparent 1px);
+    background-size: 56px 56px;
+    animation: gridDrift 24s linear infinite;
     pointer-events: none;
   }
-  @keyframes gridMove {
+  @keyframes gridDrift {
     from { background-position: 0 0; }
-    to   { background-position: 60px 60px; }
+    to   { background-position: 56px 56px; }
   }
 
-  /* ─── FLOATING AMBIENT ORBS ─── */
+  /* Ambient neon orbs */
   .orb {
     position: fixed; border-radius: 50%;
-    filter: blur(90px);
+    filter: blur(100px);
     pointer-events: none; z-index: 0;
-    animation: orbFloat 14s ease-in-out infinite alternate;
   }
-  .orb-1 { width:340px; height:340px; background:rgba(0,240,255,0.12); top:-100px; left:-80px; animation-delay:0s; }
-  .orb-2 { width:280px; height:280px; background:rgba(255,45,149,0.10); bottom:-60px; right:-60px; animation-delay:-4s; }
-  .orb-3 { width:220px; height:220px; background:rgba(176,38,255,0.09); top:45%; left:55%; animation-delay:-8s; }
-  @keyframes orbFloat {
-    from { transform: translate(0,0) scale(1); }
-    to   { transform: translate(30px,-40px) scale(1.1); }
+  .orb-1 { width:320px; height:320px; background:rgba(0,229,255,0.10); top:-80px; left:-60px; }
+  .orb-2 { width:260px; height:260px; background:rgba(255,45,149,0.08); bottom:-40px; right:-50px; }
+  .orb-3 { width:200px; height:200px; background:rgba(176,38,255,0.07); top:50%; left:60%; }
+
+  /* ─── WHITE CONTENT PAGE ─── */
+  .page {
+    position: relative; z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--white-page);
+    box-shadow: 0 0 60px rgba(0,229,255,0.18), 0 0 120px rgba(176,38,255,0.08);
+    min-height: 100vh;
   }
 
-  /* ─── WRAPPER ─── */
-  .wrapper { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 0 24px 80px; }
-
-  /* ─── NAV ─── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; justify-content: center; gap: 28px;
-    padding: 18px 0;
-    background: linear-gradient(180deg, rgba(2,4,8,0.92) 0%, transparent 100%);
-  }
-  nav a {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.68rem; font-weight: 700;
-    letter-spacing: 2.5px; text-transform: uppercase;
-    color: var(--text-dim);
-    text-decoration: none;
-    transition: color 0.3s, text-shadow 0.3s;
-  }
-  nav a:hover { color: var(--neon-cyan); text-shadow: var(--glow-cyan); }
-
-  /* ─── HERO ─── */
-  .hero {
-    padding-top: 140px;
-    text-align: center;
-    margin-bottom: 80px;
-  }
-  .hero-tag {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--neon-green);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    text-shadow: var(--glow-green);
-    margin-bottom: 16px;
-    animation: blink 3s ease-in-out infinite;
-  }
-  @keyframes blink { 0%,100%{ opacity:1 } 50%{ opacity:0.4 } }
-
-  .hero h1 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: clamp(2.4rem, 6vw, 3.8rem);
-    font-weight: 900;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-violet) 50%, var(--neon-magenta) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    filter: drop-shadow(0 0 18px rgba(0,240,255,0.4));
-    margin-bottom: 12px;
-  }
-  .hero-sub {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 1.15rem;
-    font-weight: 300;
-    color: var(--text-mid);
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin-bottom: 28px;
-  }
-  .hero-loc {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--text-dim);
-    letter-spacing: 2px;
-    margin-bottom: 32px;
-  }
-  .hero-loc span { color: var(--neon-cyan); text-shadow: var(--glow-cyan); }
-
-  /* Social links */
-  .socials { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; }
-  .socials a {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--text-dim);
-    text-decoration: none;
-    border: 1px solid rgba(0,240,255,0.18);
-    padding: 7px 16px;
-    border-radius: 3px;
-    letter-spacing: 1.5px;
-    transition: all 0.3s;
+  /* ─── HEADER (dark neon section) ─── */
+  .header {
     position: relative;
+    background: #0d1117;
     overflow: hidden;
-  }
-  .socials a::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(0,240,255,0.08), rgba(176,38,255,0.08));
-    opacity: 0; transition: opacity 0.3s;
-  }
-  .socials a:hover { border-color: var(--neon-cyan); color: var(--neon-cyan); box-shadow: var(--glow-cyan); }
-  .socials a:hover::before { opacity: 1; }
-
-  /* ─── SECTION TITLES ─── */
-  .section-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 5px;
-    text-transform: uppercase;
-    color: var(--neon-cyan);
-    text-shadow: var(--glow-cyan);
-    margin-bottom: 36px;
-    display: flex; align-items: center; gap: 14px;
-  }
-  .section-title::before {
-    content: '//';
-    color: var(--neon-magenta);
-    text-shadow: var(--glow-mag);
-  }
-  .section-title .line {
-    flex: 1; height: 1px;
-    background: linear-gradient(90deg, rgba(0,240,255,0.3), transparent);
+    padding-bottom: 36px;
   }
 
-  /* ─── CARDS ─── */
-  .card {
-    background: var(--bg-card);
-    border: 1px solid rgba(0,240,255,0.1);
-    border-radius: 6px;
-    padding: 24px 28px;
-    margin-bottom: 18px;
+  /* Banner background image */
+  .header-banner {
+    width: 100%;
+    height: 220px;
+    background: url('6wa1_neon.png') center/cover no-repeat;
     position: relative;
-    transition: border-color 0.4s, box-shadow 0.4s, transform 0.3s;
-    backdrop-filter: blur(6px);
   }
-  .card:hover {
-    border-color: rgba(0,240,255,0.35);
-    box-shadow: 0 0 22px rgba(0,240,255,0.08), inset 0 1px 0 rgba(0,240,255,0.1);
-    transform: translateY(-2px);
-  }
-  /* accent bar top-left */
-  .card::before {
+  /* Subtle dark gradient overlay at the bottom of the banner so it fades into header bg */
+  .header-banner::after {
     content: '';
-    position: absolute; top: 0; left: 0;
-    width: 3px; height: 100%;
-    background: linear-gradient(180deg, var(--neon-cyan), var(--neon-violet));
-    border-radius: 6px 0 0 6px;
-    opacity: 0.7;
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, transparent, #0d1117);
   }
 
-  /* ─── EXPERIENCE ─── */
-  .exp-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
-  .exp-title {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 1.18rem; font-weight: 700;
-    color: #fff;
-    letter-spacing: 0.5px;
+  /* Profile pic circle — sits overlapping the banner bottom edge */
+  .profile-pic-wrap {
+    position: relative;
+    margin-top: -56px;
+    display: flex;
+    justify-content: center;
+    z-index: 2;
   }
-  .exp-date {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.62rem;
-    color: var(--neon-green);
-    text-shadow: var(--glow-green);
-    letter-spacing: 1px;
-    white-space: nowrap;
-  }
-  .exp-place {
-    font-size: 0.82rem;
-    color: var(--neon-violet);
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    margin-bottom: 6px;
-  }
-  .exp-desc {
-    font-size: 0.88rem;
-    color: var(--text-mid);
-    font-weight: 400;
+  .profile-pic {
+    width: 112px; height: 112px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--neon-cyan);
+    box-shadow: 0 0 14px rgba(0,229,255,0.45), 0 0 40px rgba(0,229,255,0.15);
+    background: #1a1a2e; /* fallback */
   }
 
-  /* ─── PUBLICATIONS ─── */
-  .pub-title {
-    font-size: 1.02rem;
-    font-weight: 600;
-    color: #fff;
-    margin-bottom: 5px;
-    line-height: 1.45;
+  /* Name & title */
+  .header-info {
+    text-align: center;
+    margin-top: 18px;
+    padding: 0 20px;
   }
-  .pub-authors {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.62rem;
-    color: var(--text-dim);
+  .header-info h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #ffffff;
     letter-spacing: 0.5px;
     margin-bottom: 4px;
   }
-  .pub-venue {
-    font-size: 0.75rem;
-    color: var(--neon-magenta);
-    text-shadow: var(--glow-mag);
-    font-weight: 500;
-    letter-spacing: 0.8px;
+  .header-info .role {
+    font-size: 0.88rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    letter-spacing: 0.3px;
+  }
+  .header-info .location {
+    font-size: 0.78rem;
+    color: #5a6a8a;
+    margin-top: 3px;
   }
 
-  /* ─── SKILLS GRID ─── */
-  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
-  .skill-card {
-    background: rgba(12,16,28,0.7);
-    border: 1px solid rgba(0,240,255,0.1);
-    border-radius: 6px;
-    padding: 20px 22px;
-    transition: border-color 0.3s, box-shadow 0.3s;
+  /* Social links row */
+  .socials {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 20px;
+    flex-wrap: wrap;
   }
-  .skill-card:hover {
-    border-color: rgba(176,38,255,0.35);
-    box-shadow: 0 0 16px rgba(176,38,255,0.1);
+  .socials a {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #a0b0c8;
+    text-decoration: none;
+    border: 1px solid rgba(0,229,255,0.25);
+    padding: 6px 14px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+    transition: all 0.25s;
+    display: flex; align-items: center; gap: 6px;
   }
-  .skill-cat {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.58rem;
+  .socials a:hover {
+    border-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+    box-shadow: 0 0 10px rgba(0,229,255,0.3);
+  }
+  .socials a svg { width:14px; height:14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .socials a svg.filled { fill: currentColor; stroke: none; }
+
+  /* ─── WHITE CONTENT AREA ─── */
+  .content { padding: 44px 48px 60px; }
+
+  /* ─── SECTION TITLES ─── */
+  .section-title {
+    font-size: 0.72rem;
+    font-weight: 600;
     letter-spacing: 2.5px;
     text-transform: uppercase;
+    color: var(--neon-cyan);
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-title .line {
+    flex: 1; height: 1px;
+    background: var(--accent-line);
+  }
+
+  /* ─── SECTION SPACING ─── */
+  .section { margin-bottom: 40px; }
+
+  /* ─── EXPERIENCE ITEM ─── */
+  .exp-item {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--accent-line);
+  }
+  .exp-item:last-child { border-bottom: none; }
+
+  .exp-top { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 4px; }
+  .exp-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .exp-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .exp-place {
+    font-size: 0.85rem;
+    font-weight: 500;
     color: var(--neon-violet);
-    text-shadow: var(--glow-violet);
-    margin-bottom: 10px;
+    margin: 3px 0;
+  }
+  .exp-desc {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin-top: 4px;
+  }
+
+  /* ─── PUBLICATIONS ─── */
+  .pub-item {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--accent-line);
+  }
+  .pub-item:last-child { border-bottom: none; }
+  .pub-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.45;
+    margin-bottom: 5px;
+  }
+  .pub-authors {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .pub-venue {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--neon-magenta);
+  }
+
+  /* ─── SKILLS ─── */
+  .skill-group { margin-bottom: 18px; }
+  .skill-group:last-child { margin-bottom: 0; }
+  .skill-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
   }
   .skill-tags { display: flex; flex-wrap: wrap; gap: 7px; }
   .tag {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.8px;
-    padding: 4px 10px;
-    border-radius: 3px;
-    background: rgba(0,240,255,0.07);
-    border: 1px solid rgba(0,240,255,0.18);
-    color: var(--neon-cyan);
-    transition: background 0.3s, box-shadow 0.3s;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    padding: 5px 11px;
+    border-radius: 4px;
+    background: #f0f2f8;
+    color: var(--text-secondary);
+    border: 1px solid #e2e4ec;
+    transition: background 0.2s, border-color 0.2s;
   }
   .tag:hover {
-    background: rgba(0,240,255,0.15);
-    box-shadow: var(--glow-cyan);
+    background: #e6f7ff;
+    border-color: rgba(0,229,255,0.4);
+    color: #0077aa;
   }
-
-  /* ─── EDUCATION ─── */
-  .edu-degree {
-    font-size: 1.08rem; font-weight: 700;
-    color: #fff; margin-bottom: 3px;
-  }
-  .edu-uni {
-    font-size: 0.82rem;
-    color: var(--neon-violet);
-    font-weight: 500; margin-bottom: 4px;
-  }
-  .edu-grade {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.62rem;
-    color: var(--neon-green);
-    text-shadow: var(--glow-green);
-  }
-
-  /* ─── AWARDS ─── */
-  .award-name {
-    font-size: 1.02rem; font-weight: 600;
-    color: #fff; margin-bottom: 3px;
-  }
-  .award-detail {
-    font-size: 0.82rem;
-    color: var(--text-mid);
-  }
-  .award-highlight {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.62rem;
-    color: var(--neon-yellow);
-    letter-spacing: 0.8px;
-    margin-top: 6px;
-  }
-
-  /* ─── TWO COL LAYOUT (awards + edu) ─── */
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  @media (max-width:620px) { .two-col { grid-template-columns: 1fr; } }
 
   /* ─── PROJECTS ─── */
+  .project-item {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--accent-line);
+  }
+  .project-item:last-child { border-bottom: none; }
   .project-name {
-    font-size: 1.02rem; font-weight: 600;
-    color: #fff; margin-bottom: 5px; line-height: 1.4;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin-bottom: 5px;
   }
   .project-desc {
-    font-size: 0.86rem;
-    color: var(--text-mid);
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
   }
-  .project-tags { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .project-tags { margin-top: 8px; display: flex; gap: 7px; flex-wrap: wrap; }
   .project-tag {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
     color: var(--neon-magenta);
     border: 1px solid rgba(255,45,149,0.25);
     padding: 3px 9px;
     border-radius: 3px;
+    background: rgba(255,45,149,0.04);
+  }
+
+  /* ─── EDUCATION ─── */
+  .edu-item {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--accent-line);
+  }
+  .edu-item:last-child { border-bottom: none; }
+  .edu-top { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 4px; }
+  .edu-degree {
+    font-size: 1.0rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .edu-uni {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--neon-violet);
+    margin: 3px 0;
+  }
+  .edu-grade {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--neon-green);
+    margin-top: 3px;
+  }
+
+  /* ─── AWARDS ─── */
+  .award-item {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--accent-line);
+  }
+  .award-item:last-child { border-bottom: none; }
+  .award-top { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 4px; }
+  .award-name {
+    font-size: 1.0rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .award-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+  .award-highlight {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: #b08a00;
+    margin-top: 5px;
+    font-weight: 500;
   }
 
   /* ─── FOOTER ─── */
-  footer {
+  .footer {
     text-align: center;
-    padding: 50px 0 20px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--text-dim);
-    letter-spacing: 2px;
+    padding: 24px 0 40px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
   }
-  footer span { color: var(--neon-cyan); }
 
-  /* ─── REVEAL ANIMATION ─── */
-  .reveal {
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1);
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 640px) {
+    .content { padding: 36px 24px 48px; }
+    .header-banner { height: 160px; }
+    .profile-pic { width: 92px; height: 92px; }
+    .header-info h1 { font-size: 1.4rem; }
   }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-
-  /* ─── SCROLLBAR ─── */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--bg-deep); }
-  ::-webkit-scrollbar-thumb { background: rgba(0,240,255,0.25); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(0,240,255,0.5); }
 </style>
 </head>
 <body>
 
-<!-- Bg layers -->
-<div class="bg-grid"></div>
+<!-- Neon background layers -->
 <div class="orb orb-1"></div>
 <div class="orb orb-2"></div>
 <div class="orb orb-3"></div>
 
-<!-- Nav -->
-<nav>
-  <a href="#experience">Experience</a>
-  <a href="#publications">Publications</a>
-  <a href="#skills">Skills</a>
-  <a href="#projects">Projects</a>
-  <a href="#education">Education</a>
-</nav>
+<!-- White content page -->
+<div class="page">
 
-<div class="wrapper">
+  <!-- ──── DARK NEON HEADER ──── -->
+  <header class="header">
+    <div class="header-banner"></div>
 
-  <!-- ──── HERO ──── -->
-  <header class="hero reveal">
-    <div class="hero-tag">● System Online</div>
-    <h1>Omid Mokhtari</h1>
-    <div class="hero-sub">Geometric Deep Learning &nbsp;·&nbsp; Protein Structures</div>
-    <div class="hero-loc"><span>Ph.D. Researcher</span> &nbsp;|&nbsp; Inria · Lorraine University &nbsp;|&nbsp; Villers-lès-Nancy, FR</div>
+    <div class="profile-pic-wrap">
+      <img class="profile-pic" src="prof.png" alt="Omid Mokhtari" />
+    </div>
+
+    <div class="header-info">
+      <h1>Omid Mokhtari</h1>
+      <div class="role">Ph.D. Researcher · Geometric Deep Learning</div>
+      <div class="location">Inria · Lorraine University &nbsp;|&nbsp; Villers-lès-Nancy, France</div>
+    </div>
+
     <div class="socials">
-      <a href="mailto:omid.mokhtari@inria.fr">✉ Email</a>
-      <a href="https://github.com/Amisteromid" target="_blank">⌂ GitHub</a>
-      <a href="https://www.linkedin.com/in/omid-mokhtari-81a982131/" target="_blank">in LinkedIn</a>
+      <!-- GitHub -->
+      <a href="https://github.com/Amisteromid" target="_blank">
+        <svg class="filled" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        GitHub
+      </a>
+      <!-- Google Scholar -->
+      <a href="https://scholar.google.com" target="_blank">
+        <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Scholar
+      </a>
+      <!-- LinkedIn -->
+      <a href="https://linkedin.com/in/Omid-Mokhtari" target="_blank">
+        <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+        LinkedIn
+      </a>
+      <!-- Email -->
+      <a href="mailto:omid.mokhtari@inria.fr">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Email
+      </a>
     </div>
   </header>
 
-  <!-- ──── EXPERIENCE ──── -->
-  <section id="experience">
-    <div class="section-title reveal">Research & Experience <span class="line"></span></div>
+  <!-- ──── WHITE CONTENT ──── -->
+  <div class="content">
 
-    <div class="card reveal">
-      <div class="exp-header">
-        <div class="exp-title">Ph.D. Researcher</div>
-        <div class="exp-date">Oct 2023 – Present</div>
+    <!-- EXPERIENCE -->
+    <div class="section">
+      <div class="section-title">Experience <span class="line"></span></div>
+
+      <div class="exp-item">
+        <div class="exp-top">
+          <div class="exp-title">Ph.D. Researcher</div>
+          <div class="exp-date">Oct 2023 – Present</div>
+        </div>
+        <div class="exp-place">Inria Center · Lorraine University, France</div>
+        <div class="exp-desc">Developing Geometric Deep Learning frameworks for protein structure-related problems.</div>
       </div>
-      <div class="exp-place">Inria Center · Lorraine University, France</div>
-      <div class="exp-desc">Developing Geometric Deep Learning frameworks for protein structure-related problems.</div>
-    </div>
 
-    <div class="card reveal">
-      <div class="exp-header">
-        <div class="exp-title">Visiting Researcher</div>
-        <div class="exp-date">Aug – Nov 2025</div>
+      <div class="exp-item">
+        <div class="exp-top">
+          <div class="exp-title">Visiting Researcher</div>
+          <div class="exp-date">Aug – Nov 2025</div>
+        </div>
+        <div class="exp-place">Lindorff-Larsen Lab · Copenhagen University, Denmark</div>
+        <div class="exp-desc">Investigating synergy of protein dynamics in inverse folding tasks using SE(3) Equivariant Neural Networks.</div>
       </div>
-      <div class="exp-place">Lindorff-Larsen Lab · Copenhagen University, Denmark</div>
-      <div class="exp-desc">Investigating synergy of protein dynamics in inverse folding tasks using SE(3) Equivariant Neural Networks.</div>
-    </div>
 
-    <div class="card reveal">
-      <div class="exp-header">
-        <div class="exp-title">Intern / Master Thesis</div>
-        <div class="exp-date">Jan – Jun 2023</div>
+      <div class="exp-item">
+        <div class="exp-top">
+          <div class="exp-title">Intern / Master Thesis</div>
+          <div class="exp-date">Jan – Jun 2023</div>
+        </div>
+        <div class="exp-place">Elofsson Lab · SciLifeLab, Stockholm University, Sweden</div>
+        <div class="exp-desc">AlphaFold-based approach for predicting the assembly of large protein structures.</div>
       </div>
-      <div class="exp-place">Elofsson Lab · SciLifeLab, Stockholm University, Sweden</div>
-      <div class="exp-desc">AlphaFold-based approach for predicting the assembly of large protein structures.</div>
-    </div>
 
-    <div class="card reveal">
-      <div class="exp-header">
-        <div class="exp-title">Management Team Member</div>
-        <div class="exp-date">Jul 2020 – Mar 2022</div>
+      <div class="exp-item">
+        <div class="exp-top">
+          <div class="exp-title">Management Team Member</div>
+          <div class="exp-date">Jul 2020 – Mar 2022</div>
+        </div>
+        <div class="exp-place">OMITREEN Training & Research Network</div>
+        <div class="exp-desc">Python programming instructor and teaching assistant.</div>
       </div>
-      <div class="exp-place">OMITREEN Training & Research Network</div>
-      <div class="exp-desc">Python programming instructor and teaching assistant.</div>
-    </div>
-  </section>
-
-  <!-- ──── PUBLICATIONS ──── -->
-  <section id="publications" style="margin-top:60px;">
-    <div class="section-title reveal">Publications <span class="line"></span></div>
-
-    <div class="card reveal">
-      <div class="pub-title">DynamicGT: a dynamic-aware geometric transformer model to predict protein binding interfaces in flexible and disordered regions</div>
-      <div class="pub-authors">Mokhtari, O., Grudinin, S., Karami, Y., & Khakzad, H.</div>
-      <div class="pub-venue">Cell Systems · 2025</div>
     </div>
 
-    <div class="card reveal">
-      <div class="pub-title">DynaRepo: The repository of macromolecular conformational dynamics</div>
-      <div class="pub-authors">Mokhtari, O., Bignon, E., Khakzad, H., & Karami, Y.</div>
-      <div class="pub-venue">Nucleic Acids Research · 2025</div>
+    <!-- PUBLICATIONS -->
+    <div class="section">
+      <div class="section-title">Publications <span class="line"></span></div>
+
+      <div class="pub-item">
+        <div class="pub-title">DynamicGT: a dynamic-aware geometric transformer model to predict protein binding interfaces in flexible and disordered regions</div>
+        <div class="pub-authors">Mokhtari, O., Grudinin, S., Karami, Y., & Khakzad, H.</div>
+        <div class="pub-venue">Cell Systems · 2025</div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-title">DynaRepo: The repository of macromolecular conformational dynamics</div>
+        <div class="pub-authors">Mokhtari, O., Bignon, E., Khakzad, H., & Karami, Y.</div>
+        <div class="pub-venue">Nucleic Acids Research · 2025</div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-title">Identification of beta-sitosterol and stigmasterol as possible inhibitors of 5α-reductase 1: an In-silico study</div>
+        <div class="pub-authors">Zamani, P., Mokhtari, O., & Dehghanian, F.</div>
+        <div class="pub-venue">Artificial Intelligence in Precision Medicine · 2022</div>
+      </div>
     </div>
 
-    <div class="card reveal">
-      <div class="pub-title">Identification of beta-sitosterol and stigmasterol as possible inhibitors of 5α-reductase 1: an In-silico study</div>
-      <div class="pub-authors">Zamani, P., Mokhtari, O., & Dehghanian, F.</div>
-      <div class="pub-venue">Artificial Intelligence in Precision Medicine · 2022</div>
-    </div>
-  </section>
+    <!-- SKILLS -->
+    <div class="section">
+      <div class="section-title">Skills <span class="line"></span></div>
 
-  <!-- ──── SKILLS ──── -->
-  <section id="skills" style="margin-top:60px;">
-    <div class="section-title reveal">Skills & Tools <span class="line"></span></div>
-    <div class="skills-grid">
-
-      <div class="skill-card reveal">
-        <div class="skill-cat">AI & Deep Learning</div>
+      <div class="skill-group">
+        <div class="skill-label">AI & Deep Learning</div>
         <div class="skill-tags">
           <span class="tag">PyTorch</span>
           <span class="tag">E3NN</span>
-          <span class="tag">GNNs</span>
+          <span class="tag">Graph Neural Networks</span>
           <span class="tag">Scikit-learn</span>
-          <span class="tag">Geo. DL</span>
-          <span class="tag">Reinf. Learning</span>
+          <span class="tag">Geometric Deep Learning</span>
+          <span class="tag">Reinforcement Learning</span>
         </div>
       </div>
 
-      <div class="skill-card reveal">
-        <div class="skill-cat">Scientific Computing</div>
+      <div class="skill-group">
+        <div class="skill-label">Scientific Computing</div>
         <div class="skill-tags">
           <span class="tag">Python</span>
           <span class="tag">Bash</span>
@@ -520,123 +506,121 @@
           <span class="tag">HPC</span>
           <span class="tag">SQL</span>
           <span class="tag">Multiprocessing</span>
+          <span class="tag">API Integration</span>
         </div>
       </div>
 
-      <div class="skill-card reveal">
-        <div class="skill-cat">Protein Engineering</div>
+      <div class="skill-group">
+        <div class="skill-label">Protein Engineering</div>
         <div class="skill-tags">
           <span class="tag">RFdiffusion</span>
           <span class="tag">ProteinMPNN</span>
           <span class="tag">PyRosetta</span>
           <span class="tag">HMM</span>
-          <span class="tag">PyMOL</span>
+          <span class="tag">PyMOL Scripting</span>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- ──── PROJECTS ──── -->
-  <section id="projects" style="margin-top:60px;">
-    <div class="section-title reveal">Projects <span class="line"></span></div>
+    <!-- PROJECTS -->
+    <div class="section">
+      <div class="section-title">Projects <span class="line"></span></div>
 
-    <div class="card reveal">
-      <div class="project-name">Protein Inverse Folding with Geometry-Aware Co-evolution over Structural Ensembles</div>
-      <div class="project-desc">SE(3)-Equivariant Neural Network for protein inverse folding from conformational ensembles. Applied to ΔΔG prediction upon mutation and sequence design.</div>
-      <div class="project-tags">
-        <span class="project-tag">Ongoing</span>
-        <span class="project-tag">SE(3) Equivariance</span>
-        <span class="project-tag">Inverse Folding</span>
+      <div class="project-item">
+        <div class="project-name">Protein Inverse Folding with Geometry-Aware Co-evolution over Structural Ensembles</div>
+        <div class="project-desc">SE(3)-Equivariant Neural Network for protein inverse folding from conformational ensembles. Applied to ΔΔG prediction upon mutation and sequence design.</div>
+        <div class="project-tags">
+          <span class="project-tag">Ongoing</span>
+          <span class="project-tag">SE(3) Equivariance</span>
+          <span class="project-tag">Inverse Folding</span>
+        </div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-name">Enhancing Protein-Protein Interaction Detection via ML & AlphaFold</div>
+        <div class="project-desc">Using machine learning and AlphaFold-multimer to distinguish interactions of homologous chains within large protein complexes.</div>
+        <div class="project-tags">
+          <span class="project-tag">AlphaFold</span>
+          <span class="project-tag">PPI Detection</span>
+        </div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-name">Detecting Kunitz Domain using a Hidden Markov Model</div>
+        <div class="project-desc">HMM-based detection of unannotated proteins containing the Kunitz domain.</div>
+        <div class="project-tags">
+          <span class="project-tag">HMM</span>
+          <span class="project-tag">Sequence Analysis</span>
+        </div>
       </div>
     </div>
 
-    <div class="card reveal">
-      <div class="project-name">Enhancing Protein-Protein Interaction Detection via ML & AlphaFold</div>
-      <div class="project-desc">Using machine learning and AlphaFold-multimer to distinguish interactions of homologous chains within large protein complexes.</div>
-      <div class="project-tags">
-        <span class="project-tag">AlphaFold</span>
-        <span class="project-tag">PPI Detection</span>
-        <span class="project-tag">GitHub Report</span>
-      </div>
-    </div>
+    <!-- EDUCATION -->
+    <div class="section">
+      <div class="section-title">Education <span class="line"></span></div>
 
-    <div class="card reveal">
-      <div class="project-name">Detecting Kunitz Domain using a Hidden Markov Model</div>
-      <div class="project-desc">HMM-based detection of unannotated proteins containing the Kunitz domain.</div>
-      <div class="project-tags">
-        <span class="project-tag">HMM</span>
-        <span class="project-tag">Sequence Analysis</span>
-        <span class="project-tag">GitHub Report</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ──── EDUCATION & AWARDS ──── -->
-  <section id="education" style="margin-top:60px;">
-    <div class="section-title reveal">Education & Awards <span class="line"></span></div>
-    <div class="two-col">
-
-      <!-- Education column -->
-      <div>
-        <div class="card reveal">
-          <div class="exp-date" style="margin-bottom:6px;">Oct 2023 – Present</div>
+      <div class="edu-item">
+        <div class="edu-top">
           <div class="edu-degree">Ph.D. – Geometric Deep Learning for Biomolecular Structures</div>
-          <div class="edu-uni">University of Lorraine, France</div>
+          <div class="exp-date">Oct 2023 – Present</div>
         </div>
-        <div class="card reveal">
-          <div class="exp-date" style="margin-bottom:6px;">Oct 2021 – Sep 2023</div>
-          <div class="edu-degree">M.Sc. – Bioinformatics</div>
-          <div class="edu-uni">University of Bologna, Italy</div>
-          <div class="edu-grade">110 / 110 ✦</div>
-        </div>
-        <div class="card reveal">
-          <div class="exp-date" style="margin-bottom:6px;">Oct 2016 – Aug 2020</div>
-          <div class="edu-degree">B.Sc. – Cellular & Molecular Biology</div>
-          <div class="edu-uni">University of Isfahan, Iran</div>
-          <div class="edu-grade">16.00 / 20</div>
-        </div>
+        <div class="edu-uni">University of Lorraine, France</div>
       </div>
 
-      <!-- Awards column -->
-      <div>
-        <div class="card reveal" style="border-left-color: var(--neon-yellow);">
-          <div class="exp-date" style="margin-bottom:6px;">May 2025</div>
-          <div class="award-name">DrEAM Mobility Grant</div>
-          <div class="award-detail">Université de Lorraine</div>
-          <div class="award-highlight">€4,500 awarded</div>
+      <div class="edu-item">
+        <div class="edu-top">
+          <div class="edu-degree">M.Sc. – Bioinformatics</div>
+          <div class="exp-date">Oct 2021 – Sep 2023</div>
         </div>
-        <div class="card reveal" style="border-left-color: var(--neon-yellow);">
-          <div class="exp-date" style="margin-bottom:6px;">Sep 2024</div>
-          <div class="award-name">DARI – Jean Zay HPC Access</div>
-          <div class="award-detail">IDRIS · Learning the conformational heterogeneity of proteins to predict functional sites</div>
-          <div class="award-highlight">100,000 GPU hours · ~€143,447 equiv.</div>
+        <div class="edu-uni">University of Bologna, Italy</div>
+        <div class="edu-grade">110 / 110</div>
+      </div>
+
+      <div class="edu-item">
+        <div class="edu-top">
+          <div class="edu-degree">B.Sc. – Cellular & Molecular Biology</div>
+          <div class="exp-date">Oct 2016 – Aug 2020</div>
         </div>
-        <div class="card reveal" style="border-left-color: var(--neon-yellow);">
-          <div class="exp-date" style="margin-bottom:6px;">Apr 2022</div>
-          <div class="award-name">Erasmus+ Scholarship</div>
-          <div class="award-detail">Università di Bologna</div>
-        </div>
+        <div class="edu-uni">University of Isfahan, Iran</div>
+        <div class="edu-grade">16.00 / 20</div>
       </div>
     </div>
-  </section>
 
-  <!-- Footer -->
-  <footer class="reveal">
-    <p>© 2025 <span>Omid Mokhtari</span> &nbsp;·&nbsp; Built with neon ink &amp; code</p>
-  </footer>
-</div>
+    <!-- AWARDS -->
+    <div class="section">
+      <div class="section-title">Awards & Grants <span class="line"></span></div>
 
-<!-- ──── REVEAL ON SCROLL ──── -->
-<script>
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      <div class="award-item">
+        <div class="award-top">
+          <div class="award-name">DrEAM Mobility Grant</div>
+          <div class="exp-date">May 2025</div>
+        </div>
+        <div class="award-desc">Université de Lorraine</div>
+        <div class="award-highlight">€4,500 awarded</div>
+      </div>
 
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-</script>
+      <div class="award-item">
+        <div class="award-top">
+          <div class="award-name">DARI – Jean Zay HPC Access</div>
+          <div class="exp-date">Sep 2024</div>
+        </div>
+        <div class="award-desc">IDRIS · Learning the conformational heterogeneity of proteins to predict functional sites</div>
+        <div class="award-highlight">100,000 GPU hours · ~€143,447 equivalent computing cost</div>
+      </div>
+
+      <div class="award-item">
+        <div class="award-top">
+          <div class="award-name">Erasmus+ Scholarship</div>
+          <div class="exp-date">Apr 2022</div>
+        </div>
+        <div class="award-desc">Alma Mater Studiorum · Università di Bologna</div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <div class="footer">© 2025 Omid Mokhtari</div>
+</div><!-- /page -->
+
 </body>
 </html>
