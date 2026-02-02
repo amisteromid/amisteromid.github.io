@@ -134,17 +134,27 @@
     display: flex;
     justify-content: center;
   }
-  .profile-pic {
-    width: 130px; height: 130px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid var(--neon-cyan);
-    box-shadow:
-      0 0 20px rgba(0,229,255,0.8),
-      0 0 40px rgba(0,229,255,0.5),
-      0 0 60px rgba(0,229,255,0.3);
-    background: #1a1a2e;
-  }
+  	/* Profile pic cyan → magenta glow ring */
+	.profile-pic {
+		width: 130px;
+		height: 130px;
+		border-radius: 50%;
+		object-fit: cover;
+
+		border: 3px solid transparent;
+
+		/* gradient border ring */
+		background:
+			linear-gradient(#1a1a2e, #1a1a2e) padding-box,
+			linear-gradient(90deg, #00e5ff, #ff77ff) border-box;
+
+		/* split neon glow */
+		box-shadow:
+			-14px 0 28px rgba(0,229,255,0.9),
+			 14px 0 28px rgba(255,119,255,0.9),
+			0 0 45px rgba(0,229,255,0.35),
+			0 0 45px rgba(255,119,255,0.35);
+	}
 
   /* Text info - moved outside visual section */
   .header-info {
