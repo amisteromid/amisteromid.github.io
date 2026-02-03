@@ -339,20 +339,64 @@
     line-height: 1.55;
   }
 
-  /* ─── PUBLICATIONS ─── */
+  /* ─── PUBLICATIONS with images ─── */
+  .card.pub-card {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+
+  .pub-image-wrap {
+    width: 100%;
+    height: 120px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 2px solid rgba(0,229,255,0.3);
+    box-shadow: 0 0 15px rgba(0,229,255,0.2);
+    background: #f0f0f0;
+  }
+
+  .pub-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+  }
+
+  .card.pub-card:hover .pub-image {
+    transform: scale(1.05);
+  }
+
+  .pub-content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
   .pub-title {
     font-size: 0.97rem;
     font-weight: 600;
     color: var(--text-primary);
     line-height: 1.45;
-    margin-bottom: 6px;
   }
+
+  .pub-title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .pub-title a:hover {
+    color: var(--neon-cyan);
+  }
+
   .pub-authors {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.67rem;
     color: var(--text-muted);
-    margin-bottom: 5px;
   }
+
   .pub-venue {
     font-size: 0.76rem;
     font-weight: 500;
@@ -488,6 +532,15 @@
     .header-info h1 { font-size: 1.45rem; }
     .header-info { padding: 0px 16px 20px; max-width: calc(100% - 24px); }
     .content-page { margin-left: 12px; margin-right: 12px; }
+    
+    .card.pub-card {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    
+    .pub-image-wrap {
+      height: 180px;
+    }
   }
 </style>
 </head>
@@ -587,22 +640,37 @@
       <div class="section">
         <div class="section-title">Publications <span class="line"></span></div>
 
-        <div class="card">
-          <div class="pub-title"><a href="https://doi.org/10.1016/j.cels.2025.101454" target="_blank">DynamicGT: a dynamic-aware geometric transformer model to predict protein binding interfaces in flexible and disordered regions</a></div>
-          <div class="pub-authors"><strong>Mokhtari, O.</strong>, Grudinin, S., Karami, Y., & Khakzad, H.</div>
-          <div class="pub-venue">Cell Systems · 2025</div>
+        <div class="card pub-card">
+          <div class="pub-image-wrap">
+            <img class="pub-image" src="https://github.com/amisteromid/DynamicGT/blob/main/states.gif?raw=true" alt="DynamicGT" />
+          </div>
+          <div class="pub-content">
+            <div class="pub-title"><a href="https://doi.org/10.1016/j.cels.2025.101454" target="_blank">DynamicGT: a dynamic-aware geometric transformer model to predict protein binding interfaces in flexible and disordered regions</a></div>
+            <div class="pub-authors"><strong>Mokhtari, O.</strong>, Grudinin, S., Karami, Y., & Khakzad, H.</div>
+            <div class="pub-venue">Cell Systems · 2025</div>
+          </div>
         </div>
 
-        <div class="card">
-          <div class="pub-title"><a href="https://doi.org/10.1093/nar/gkaf1130" target="_blank">DynaRepo: The repository of macromolecular conformational dynamics</a></div>
-          <div class="pub-authors"><strong>Mokhtari, O.</strong>, Bignon, E., Khakzad, H., & Karami, Y.</div>
-          <div class="pub-venue">Nucleic Acids Research · 2025</div>
+        <div class="card pub-card">
+          <div class="pub-image-wrap">
+            <img class="pub-image" src="https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/nar/54/D1/10.1093_nar_gkaf1130/1/m_gkaf1130figgra1.jpeg?Expires=1771571265&Signature=tnEFDefqLhWCsnMuTk54LuMMFPJcC14PO8RyOK1fU~2PEikmhGx1wJo9aw7jy~GU3ronpQTkNguFfwVnCMQKz0L0rq2WBGZ4j7HWOvr2~q0o-Oagp2zAT8ucdachQnuExcklCT4IzQsEqW4l29GQoCbT1Tcert4uCXsCTlMbkQo~dbfw~QTueqUEHypA63Le5KcZzwyF1ojxpzPRQuV11NkESC0YGcnRNA1TkVtGLB-st-nju14pkyUbeBtuBs~TDQoW7OVr5wMOXjNbipREEfqt~gydkOkm2XdCdofx4WZlrN48nYixgIiMA3GAHPoxK~6U7uDe58Op0mU09r9M4w__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA" alt="DynaRepo" />
+          </div>
+          <div class="pub-content">
+            <div class="pub-title"><a href="https://doi.org/10.1093/nar/gkaf1130" target="_blank">DynaRepo: The repository of macromolecular conformational dynamics</a></div>
+            <div class="pub-authors"><strong>Mokhtari, O.</strong>, Bignon, E., Khakzad, H., & Karami, Y.</div>
+            <div class="pub-venue">Nucleic Acids Research · 2025</div>
+          </div>
         </div>
 
-        <div class="card">
-          <div class="pub-title"><a href="https://doi.org/10.5812/pmco.121545" target="_blank">Identification of beta-sitosterol and stigmasterol as possible inhibitors of 5α-reductase 1: an In-silico study</a></div>
-          <div class="pub-authors">Zamani, P., <strong>Mokhtari, O.</strong>, & Dehghanian, F.</div>
-          <div class="pub-venue">Artificial Intelligence in Precision Medicine · 2022</div>
+        <div class="card pub-card">
+          <div class="pub-image-wrap">
+            <img class="pub-image" src="https://services.brieflands.com/cdn/serve/3170b/384de72751c7a1c7d9106fc828358a90e320b84f/pic-thumbnail.webp" alt="Stigmasterol" />
+          </div>
+          <div class="pub-content">
+            <div class="pub-title"><a href="https://doi.org/10.5812/pmco.121545" target="_blank">Identification of beta-sitosterol and stigmasterol as possible inhibitors of 5α-reductase 1: an In-silico study</a></div>
+            <div class="pub-authors">Zamani, P., <strong>Mokhtari, O.</strong>, & Dehghanian, F.</div>
+            <div class="pub-venue">Artificial Intelligence in Precision Medicine · 2022</div>
+          </div>
         </div>
       </div>
 
